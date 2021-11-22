@@ -115,9 +115,12 @@ class Counts(dict):
         super().__init__(bin_data)
         self.time_taken = time_taken
 
-    def most_frequent(self):
+    def most_frequent(self, allow_multiple=False):
         """Return the most frequent count
 
+        Args:
+            allow_multiple (bool): If True, do not raise an exception when
+                there are multiple values for the max count.
         Returns:
             str: The bit string for the most frequent result
         Raises:
@@ -128,7 +131,7 @@ class Counts(dict):
             raise exceptions.QiskitError("Can not return a most frequent count on an empty object")
         max_value = max(self.values())
         max_values_counts = [x[0] for x in self.items() if x[1] == max_value]
-        if len(max_values_counts) != 1:
+        if not allow_multiple and len(max_values_counts) != 1:
             raise exceptions.QiskitError(
                 "Multiple values have the same maximum counts: %s" % ",".join(max_values_counts)
             )

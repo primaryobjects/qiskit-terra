@@ -62,6 +62,13 @@ class TestCounts(unittest.TestCase):
         counts_obj = counts.Counts(raw_counts)
         self.assertRaises(exceptions.QiskitError, counts_obj.most_frequent)
 
+    def test_most_frequent_duplicate_allow(self):
+        raw_counts = {"0x0": 265, "0x2": 12, "0x3": 5, "0x2E": 265}
+        expected = "000000"
+        counts_obj = counts.Counts(raw_counts)
+        result = counts_obj.most_frequent()
+        self.assertEqual(expected, result)
+
     def test_hex_outcomes(self):
         raw_counts = {"0x0": 21, "0x2": 12, "0x3": 5, "0x2E": 265}
         expected = {"0x0": 21, "0x2": 12, "0x3": 5, "0x2e": 265}
